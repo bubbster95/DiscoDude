@@ -1,17 +1,13 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Disco Dude</title> 
-    <link rel="stylesheet" href="discoStyle.css"> 
-    <!-- <style>
-        canvas {
-            border: 1px solid #000;
-        }
-    </style> -->
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-</head>
-<body>
-    <canvas id="mycanvas" width="320" heigth="480"></canvas>
-    <script src="index.js"></script>
-</body>
+        <link rel="stylesheet" href="./discoStyle.css" />
+        <script type="text/javascript" src="./beats.js"></script>
+    </head>
+    <body onload="init()">
+        <div class="game-area"></div>
+        <button class="pause-button" onclick="pause()">Pause</button>
+    </body>
 </html>
