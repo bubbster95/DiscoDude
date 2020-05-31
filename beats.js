@@ -1,30 +1,57 @@
 let game;
 let nextTarget;
+let speed = 10;
+let areaX, areaY;
 
 function init() {
     game = setInterval(gameLoop, 33);
     nextTarget = 0;
 
-    spawnTarget(50, 10); // TEMPORARY for testing
+    //game area dimensions
+    areaY = getComputedStyle(document.querySelector('.game-area')).height
+    areaX = getComputedStyle(document.querySelector('.game-area')).width   
+}
+    
+function gameLoop() {
+    nextTarget++;
+    if (nextTarget == speed) {
+        // spawnTarget(50, 50)
+        randomSpawn(50, 50);
+        nextTarget = 0;
+    }
+    moveTarget(5, 0);
+
 }
 
-function gameLoop() {
-    // nextTarget++;
-    // if (nextTarget == 30) {
-    //     spawnTarget(50, 10);
-    //     nextTarget = 0;
-    // }
-
-    // Assignment1: every gameLoop, move each target 10px to the right, and down
-    // Assignment2: randomize spawn location
-    // Assignment3: randomize movement
+function moveTarget(x, y) {
+    const target = document.querySelector('.game-area > button')
+    if (parseInt(target.style.left) > parseInt(areaX)/2) {
+        target.style.left = (parseInt(target.style.left) - x) + 'px';
+        target.style.top = (parseInt(target.style.top) + y) + 'px';
+    } else{
+        target.style.left = (parseInt(target.style.left) + x) + 'px';
+        target.style.top = (parseInt(target.style.top) + y) + 'px';
+    }
+    document.querySelector('.game-area').appendChild(target);
 }
 
 function spawnTarget(x, y) {
-    const btn = document.createElement('BUTTON');
-    btn.style.left = x + 'px';
-    btn.style.top = y + 'px';
-    document.querySelector('.game-area').appendChild(btn);
+    const target = document.createElement('BUTTON');
+    target.style.left = x + 'px';
+    target.style.top = y + 'px';
+    document.querySelector('.game-area').appendChild(target); 
+}
+
+function randomSpawn(top, bottom) {
+    const target = document.createElement('BUTTON');
+    //toggle sides at random
+    toggle = Math.random();
+    if (Math.round(toggle) == 1) target.style.left = -20 + 'px';
+    else target.style.left = parseInt(areaX) + 'px';
+    //spawn withing margins (top, bottom)
+    target.style.top = (Math.random() * (parseInt(areaY)-top-bottom) + top) + 'px';
+    
+    document.querySelector('.game-area').appendChild(target);
 }
 
 function pause() {
@@ -35,8 +62,7 @@ function pause() {
     } else {
         game = setInterval(gameLoop, 33);
         button.innerText = 'Pause';
-    }
-    
+    }    
 }
 
 // stuff flys across
