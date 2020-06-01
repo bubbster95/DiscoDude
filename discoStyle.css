@@ -8,8 +8,22 @@
 
 .game-area > button {
     position: absolute;
-    height: 20px;
-    width: 20px;
-    background-color: lightcoral;
+    height: 30px;
+    width: 30px;
+    background-color: rgb(252, 239, 181);
+    border-color: lightcoral;
     border-radius: 50%;
 }
+
+.game-area > p {
+    font-size: 50px;
+    color: lightcoral;
+    text-align: center;
+    background-color: rgb(252, 239, 181);
+}
+
+/* .game-area > h1 {
+    font-size: 50px;
+    color: lightcoral;
+    text-align: center;
+} */

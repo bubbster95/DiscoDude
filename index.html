@@ -8,7 +8,16 @@
     </head>
     <body onload="init()">
         <button class="pause-button" onclick="pause()">Pause</button>
-        <div class="game-area"></div>
+        <button class="restart-button" onclick="restart()">Restart</button>
+        <label id="scoreCard"> Score: 0</label>
+        <label id="lives">Lives: 3</label>
+        <div class="game-area">
+            <p>Game Over!</p>
+            <svg id="kill-zone" width="400" height="400">
+                <rect x="180" y="0" width="30" height="400"style="fill: lightcoral;" />
+            </svg>
+            
         
+        </div>
     </body>
 </html>
