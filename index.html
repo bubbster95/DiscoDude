@@ -2,22 +2,22 @@
 <html>
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
         <link rel="stylesheet" href="./discoStyle.css" />
         <script type="text/javascript" src="./beats.js"></script>
     </head>
     <body onload="init()">
         <button class="pause-button" onclick="pause()">Pause</button>
-        <button class="restart-button" onclick="restart()">Restart</button>
-        <label id="scoreCard"> Score: 0</label>
-        <label id="lives">Lives: 3</label>
+        <button class="controls" onclick="restart()">Restart</button>
+        <label id="scoreCard"style="font-family: Impact; color: lightskyblue;"></label>
+        <label id="lives"style="font-family: Impact; color: lightcoral;"></label>
+        <lable id="highScore" style="font-family: Impact; color: lightskyblue;"></lable>
+        <br><br>
         <div class="game-area">
-            <p>Game Over!</p>
+            <p id="game-over"></p>
             <svg id="kill-zone" width="400" height="400">
-                <rect x="180" y="0" width="30" height="400"style="fill: lightcoral;" />
+                <rect id="kill-bar" x="180" y="0" width="30" height="400"style="fill: lightcoral;" />
             </svg>
-            
-        
+            <button class="start" onclick="start()">Start</button>
         </div>
     </body>
 </html>

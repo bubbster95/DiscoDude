@@ -1,12 +1,58 @@
 .game-area {
-    position: absolute;
+    position: relative;
     height: 400px;
     width: 400px;
-    border: 1px solid #000;
+    border: 5px solid lightcoral;
     background-color: lightblue;
 }
 
-.game-area > button {
+.game-area > p {
+    height: 110px;
+    font-family: Tahoma;
+    font-size: 50px;
+    color: lightcoral;
+    text-align: center;
+    background-color: rgb(252, 239, 181);
+}
+
+.controls {
+    background-color: lightgoldenrodyellow;
+    border-color: lightcoral;
+    border-radius: 10px;
+    color: lightskyblue;
+    font-family: Tahoma;
+    transition-duration: 0.4s;
+}
+.pause-button {
+    background-color: lightgoldenrodyellow;
+    border-color: lightcoral;
+    border-radius: 10px;
+    color: lightskyblue;
+    font-family: Tahoma;
+    transition-duration: 0.4s;
+}
+
+.score {
+    margin-top: 0px;
+    color: lightskyblue;
+}
+
+.start {
+    top: 160px;
+    left: 145px;
+    position: absolute;
+    font-family: Impact;
+    font-size: x-large;
+    height: 40px;
+    width: 100px;
+    text-align: center;
+    color: lightskyblue;
+    background-color: rgb(252, 239, 181);
+    border-color: lightcoral;
+    border-radius: 10px;
+}
+
+.target {
     position: absolute;
     height: 30px;
     width: 30px;
@@ -14,16 +60,3 @@
     border-color: lightcoral;
     border-radius: 50%;
 }
-
-.game-area > p {
-    font-size: 50px;
-    color: lightcoral;
-    text-align: center;
-    background-color: rgb(252, 239, 181);
-}
-
-/* .game-area > h1 {
-    font-size: 50px;
-    color: lightcoral;
-    text-align: center;
-} */
