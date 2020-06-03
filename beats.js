@@ -27,12 +27,15 @@ function gameLoop() {
             spawn(50, 50);
             nextTarget = 0;
         }
+        // move
         if (bonus[0]) moveTarget(bonus[0], 'bonus');
         if (target[0]) moveTarget(target[0], 'target');
         if (bomb[0]) moveTarget(bomb[0], 'bomb');
+        // click
         if (target[0]) target[0].onmousedown = () => addPoint('target');
         if (bonus[0]) bonus[0].onmousedown = () => bonusPoint('bonus');
         if (bomb[0]) bomb[0].onmousedown = () => looseLife('bomb');
+        // scores
         if (score >= hiScore) hiScore = score;
         if (score%100 == 0 && score != 0) lives++, score+= 10;
     }
@@ -90,6 +93,9 @@ function addPoint(className) {
     if(score%20 == 0 && score < 30) targetSpeed+= 1;
     if(score%10 == 0 && score > 30) targetSpeed+= 1;
     if(score%5 == 0 && score > 60) targetSpeed+= 1;
+    //speed cap
+    if(targetSpeed > 10) targetSpeed = 10;
+    // console.log(targetSpeed)
 }
 
 function looseLife(className) {
@@ -98,6 +104,22 @@ function looseLife(className) {
     lives--;
     document.getElementById('lives').innerHTML = "Lives: " + lives;
     if (lives == 0) gameOver();
+    else lifeAnimation();
+}
+
+function lifeAnimation() {
+    let int = setInterval(frame, 33);
+    let frames = 0
+    function frame() {
+        frames++;
+        console.log('frame', frames)
+        if (frames == 10){
+            clearInterval(int);
+            document.querySelector('.game-area > svg').style.display = 'block';
+        }
+        else document.querySelector('.game-area > svg').style.display = 'none'; 
+    }
+ 
 }
 
 function deleteTarget(className) {
@@ -139,7 +161,6 @@ function deleteAll(className){
 
 //nthchil
 //nthchildoftype
-//different enemy == different class
 
 // function spawnTarget(x, y) {
 //     const target = document.createElement('BUTTON');
@@ -148,15 +169,5 @@ function deleteAll(className){
 //     document.querySelector('.game-area').appendChild(target); 
 // }
 
-// stuff flys across
-    // make the stuff
-    // make the stuff fly
-// clicking it deletes it
-    // make the stuff do something when clicked
-    // make the stuff delete
-
 // later: slashing instead
-
-
-// add sprite animation within kill zone
-    //fix kill zone placing to responsive
+//fix kill zone placing to responsive
