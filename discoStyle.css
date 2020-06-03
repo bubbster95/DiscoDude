@@ -52,6 +52,15 @@
     border-radius: 10px;
 }
 
+.bonus {
+    position: absolute;
+    height: 30px;
+    width: 30px;
+    background-color: lightgreen;
+    border-color: lightcoral;
+    border-radius: 50%;  
+}
+
 .target {
     position: absolute;
     height: 30px;
