@@ -1,11 +1,12 @@
 let game, score, lives, hiScore = 0;
 let areaX, areaY;
-let target, nextTarget, spawnRate, targetSpeed;
+let nextTarget, spawnRate, targetSpeed;
 
 function init() {
+    started = false;
     game = setInterval(gameLoop, 33);
-    score = 0, lives = 3, nextTarget = 0, spawnRate = 30, targetSpeed = 1;
-    gameLoop(1),
+    score = 0, lives = 3, nextTarget = 0, spawnRate = 30, targetSpeed = 1,
+    target = document.getElementsByClassName('target');
     // game area dimensions
     areaY = getComputedStyle(document.querySelector('.game-area')).height
     areaX = getComputedStyle(document.querySelector('.game-area')).width   
@@ -15,41 +16,42 @@ function init() {
 }
     
 function gameLoop() {
-    target = document.querySelector('.game-area > button');
-    document.getElementById('scoreCard').innerHTML = "Score: "+ score;
-    document.getElementById('lives').innerHTML = "Lives: " + lives;
-    document.getElementById('highScore').innerHTML = "High Score: "+ hiScore;
-    if (lives <= 0) {
-        gameOver();
+    if (started == true) {
+        document.getElementById('scoreCard').innerHTML = "Score: "+ score;
+        document.getElementById('lives').innerHTML = "Lives: " + lives;
+        document.getElementById('highScore').innerHTML = "High Score: "+ hiScore;
+        nextTarget++;
+        if (nextTarget == spawnRate) {
+            randomSpawn(50, 50);
+            nextTarget = 0;
+        }
+        if (target[0]) moveTarget(targetSpeed, 0);
+        if (target[0]) target[0].onmousedown = () => addPoint('target');
+        if (score >= hiScore) hiScore = score;
+        if (score%100 == 0 && score != 0) lives++, score+= 10;
+        if (lives <= 0) {
+            gameOver();
+        }
     }
-    nextTarget++;
-    if (nextTarget == spawnRate) {
-        randomSpawn(50, 50);
-        nextTarget = 0;
-    }
-    if (target) moveTarget(targetSpeed, 0);
-    if (target) target.onmousedown = () => addPoint(target);
-    if (score >= hiScore) hiScore = score;
-    if (score%100 == 0 && score != 0) lives++, score+= 10;
 }
 
 // add sprite animation within kill zone
     //fix kill zone placing to responsive
 
 function start() {
-    game = setInterval(gameLoop, 33);
+    started = true;
+    document.getElementById('start').style.display = 'none';
 }
 
 function restart() {
+    document.getElementById('start').style.display = 'block';
     clearInterval(game);
     deleteAll('target');
-
     init();
 }
 
-function addPoint(target) {
-    
-    target.parentNode.removeChild(target)
+function addPoint(className) {
+    deleteTarget(className)
     score++;
     if(score%10 == 0 && score < 30){
         targetSpeed+= .5;
@@ -62,16 +64,17 @@ function addPoint(target) {
     }
 }
 
-function looseLife(target) {
-    deleteTarget(target);
+function looseLife(className) {
+    deleteTarget(className);
     document.getElementById('lives').innerHTML = "Lives: " + lives;
     if (targetSpeed > 1) targetSpeed--;
     lives--;
     // document.getElementById('kill-bar').innerHTML = style="fill: yellow;";
 }
 
-function deleteTarget(target) {
-    target.parentNode.removeChild(target);
+function deleteTarget(className) {
+    const element = document.getElementsByClassName(className);
+    element[0].parentNode.removeChild(element[0]);
 }
 
 function deleteAll(className){
@@ -79,40 +82,32 @@ function deleteAll(className){
     while(elements.length > 0) elements[0].parentNode.removeChild(elements[0]);
 }
 
-//nthchil
-//nthchildoftype
-//different enemy == different class
+function randomSpawn(top, bottom) {
+    const newTarget = document.createElement('BUTTON');
+    newTarget.setAttribute('class', 'target');
 
+    //toggle sides at random
+    if (Math.round(Math.random()) == 1) newTarget.style.left = -30 + 'px';
+    else newTarget.style.left = parseInt(areaX) + 'px';
+    //spawn withing margins (top, bottom)
+    newTarget.style.top = (Math.random() * (parseInt(areaY)-top-bottom) + top) + 'px';
 
-function moveTarget(x, y) {
-    const target = document.querySelector('.game-area > button');
-    // const target = document.getElementByClassName("target");
-    if (parseInt(target.style.left) < parseInt(areaX)/2 + 10 &&
-        parseInt(target.style.left) > parseInt(areaX)/2 - 50){
-            looseLife(target);
-    }
-    if (parseInt(target.style.left) > parseInt(areaX)/2) {
-        target.style.left = (parseInt(target.style.left) - x) + 'px';
-        target.style.top = (parseInt(target.style.top) + y) + 'px';
-    } else{
-        target.style.left = (parseInt(target.style.left) + x) + 'px';
-        target.style.top = (parseInt(target.style.top) + y) + 'px';
-    }
-    // document.querySelector('.game-area').appendChild(target);
+    document.querySelector('.game-area').appendChild(newTarget); 
 }
 
-function randomSpawn(top, bottom) {
-    const target = document.createElement('BUTTON');
-    target.setAttribute("class", "target");
-    // console.log(target.className)
-    toggle = Math.random();
-    //toggle sides at random
-    if (Math.round(toggle) == 1) target.style.left = -30 + 'px';
-    else target.style.left = parseInt(areaX) + 'px';
-    //spawn withing margins (top, bottom)
-    target.style.top = (Math.random() * (parseInt(areaY)-top-bottom) + top) + 'px';
-    
-    document.querySelector('.game-area').appendChild(target); 
+function moveTarget(x, y) {
+    if (parseInt(target[0].style.left) < parseInt(areaX)/2 + 10 &&
+        parseInt(target[0].style.left) > parseInt(areaX)/2 - 50){
+            looseLife('target');
+    }
+    if (parseInt(target[0].style.left) > parseInt(areaX)/2) {
+        target[0].style.left = (parseInt(target[0].style.left) - x) + 'px';
+        target[0].style.top = (parseInt(target[0].style.top) + y) + 'px';
+    } else{
+        target[0].style.left = (parseInt(target[0].style.left) + x) + 'px';
+        target[0].style.top = (parseInt(target[0].style.top) + y) + 'px';
+    }
+    // document.querySelector('.game-area').appendChild(target);
 }
 
 function pause() {
@@ -134,6 +129,9 @@ function gameOver() {
 }
 
     
+//nthchil
+//nthchildoftype
+//different enemy == different class
 
 // function spawnTarget(x, y) {
 //     const target = document.createElement('BUTTON');
