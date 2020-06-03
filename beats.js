@@ -1,16 +1,18 @@
 let game, score, lives, hiScore = 0;
 let areaX, areaY;
-let nextTarget, spawnRate, targetSpeed;
+let nextTarget, spawnRate, spawnType = 0, targetSpeed;
 
 function init() {
     started = false;
     game = setInterval(gameLoop, 33);
+    console.log(game)
     score = 0, lives = 3, nextTarget = 0, spawnRate = 30, targetSpeed = 1,
     target = document.getElementsByClassName('target');
     bonus = document.getElementsByClassName('bonus');
     // game area dimensions
     areaY = getComputedStyle(document.querySelector('.game-area')).height
-    areaX = getComputedStyle(document.querySelector('.game-area')).width   
+    areaX = getComputedStyle(document.querySelector('.game-area')).width
+    areaX = parseInt(areaX)   
     // Kill Zone and Game Over toggle
     document.querySelector('.game-area > p').style.display = 'none';
     document.querySelector('.game-area > svg').style.display = 'block';
@@ -26,8 +28,8 @@ function gameLoop() {
             randomSpawn(50, 50);
             nextTarget = 0;
         }
-        if (bonus[0]) moveBonus(targetSpeed, 0);
-        if (target[0]) moveTarget(targetSpeed, 0);
+        if (bonus[0]) moveTarget(bonus[0], 'bonus');
+        if (target[0]) moveTarget(target[0], 'target');
         if (target[0]) target[0].onmousedown = () => addPoint('target');
         if (bonus[0]) bonus[0].onmousedown = () => addBonus('bonus');
         if (score >= hiScore) hiScore = score;
@@ -58,7 +60,7 @@ function addBonus (className) {
 function addPoint(className) {
     deleteTarget(className);
     score++;
-    if (score%30 == 0) bonusSpawn(50, 50);
+    if (score%20 == 0) spawnType = 1;
     if(score%20 == 0 && score < 30) targetSpeed+= 1;
     if(score%10 == 0 && score > 30) targetSpeed+= 1;
     if(score%5 == 0 && score > 60) targetSpeed+= 1;
@@ -82,21 +84,12 @@ function deleteAll(className){
     while(elements.length > 0) elements[0].parentNode.removeChild(elements[0]);
 }
 
-function bonusSpawn(top, bottom) {
-    const bonus = document.createElement('BUTTON');
-    bonus.setAttribute('class', 'bonus');
-    //toggle sides at random
-    if (Math.round(Math.random()) == 1) bonus.style.left = -30 + 'px';
-    else bonus.style.left = parseInt(areaX) + 'px';
-    //spawn within margins (top, bottom)
-    bonus.style.top = (Math.random() * (parseInt(areaY)-top-bottom) + top) + 'px';
-    document.querySelector('.game-area').appendChild(bonus); 
-}
-
 function randomSpawn(top, bottom) {
     const newTarget = document.createElement('BUTTON');
-    newTarget.setAttribute('class', 'target');
-
+    if (spawnType == 1) {
+        newTarget.setAttribute('class', 'bonus');
+        spawnType = 0;
+    } else newTarget.setAttribute('class', 'target');
     //toggle sides at random
     if (Math.round(Math.random()) == 1) newTarget.style.left = -30 + 'px';
     else newTarget.style.left = parseInt(areaX) + 'px';
@@ -106,33 +99,14 @@ function randomSpawn(top, bottom) {
     document.querySelector('.game-area').appendChild(newTarget); 
 }
 
-function moveBonus(x, y){
-    if (parseInt(bonus[0].style.left) < parseInt(areaX)/2 + 10 &&
-        parseInt(bonus[0].style.left) > parseInt(areaX)/2 - 50){
-            deleteTarget('bonus');
+function moveTarget(target, name) {
+    let tarPos = parseInt(target.style.left);
+    if (tarPos < parseInt(areaX)/2 + 10 && tarPos > parseInt(areaX)/2 - 50) {
+        if (name == 'target') looseLife('target');
+        if (name == 'bonus') deleteTarget('bonus');
     }
-    if (parseInt(bonus[0].style.left) > parseInt(areaX)/2) {
-        bonus[0].style.left = (parseInt(bonus[0].style.left) - x) + 'px';
-        bonus[0].style.top = (parseInt(bonus[0].style.top) + y) + 'px';
-    } else{
-        bonus[0].style.left = (parseInt(bonus[0].style.left) + x) + 'px';
-        bonus[0].style.top = (parseInt(bonus[0].style.top) + y) + 'px';
-    }
-}
-
-function moveTarget(x, y) {
-    if (parseInt(target[0].style.left) < parseInt(areaX)/2 + 10 &&
-        parseInt(target[0].style.left) > parseInt(areaX)/2 - 50){
-            looseLife('target');
-    }
-    if (parseInt(target[0].style.left) > parseInt(areaX)/2) {
-        target[0].style.left = (parseInt(target[0].style.left) - x) + 'px';
-        target[0].style.top = (parseInt(target[0].style.top) + y) + 'px';
-    } else{
-        target[0].style.left = (parseInt(target[0].style.left) + x) + 'px';
-        target[0].style.top = (parseInt(target[0].style.top) + y) + 'px';
-    }
-    // document.querySelector('.game-area').appendChild(target);
+    if (tarPos > parseInt(areaX)/2) target.style.left = tarPos - targetSpeed + 'px';
+    else target.style.left = tarPos + targetSpeed + 'px';
 }
 
 function pause() {
@@ -148,6 +122,7 @@ function pause() {
 
 function gameOver() {
     clearInterval(game);
+    deleteAll('target');
     document.getElementById('game-over').innerHTML = 'Game Over!<h6 class="score">Score:'+score+'</h6>';
     document.querySelector('.game-area > p').style.display = 'block';
     document.querySelector('.game-area > svg').style.display = 'none';
