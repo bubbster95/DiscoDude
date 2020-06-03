@@ -5,14 +5,13 @@ let nextTarget, spawnRate, spawnType = 0, targetSpeed;
 function init() {
     started = false;
     game = setInterval(gameLoop, 33);
-    console.log(game)
     score = 0, lives = 3, nextTarget = 0, spawnRate = 30, targetSpeed = 1,
     target = document.getElementsByClassName('target');
     bonus = document.getElementsByClassName('bonus');
+    bomb = document.getElementsByClassName('bomb');
     // game area dimensions
     areaY = getComputedStyle(document.querySelector('.game-area')).height
-    areaX = getComputedStyle(document.querySelector('.game-area')).width
-    areaX = parseInt(areaX)   
+    areaX = getComputedStyle(document.querySelector('.game-area')).width  
     // Kill Zone and Game Over toggle
     document.querySelector('.game-area > p').style.display = 'none';
     document.querySelector('.game-area > svg').style.display = 'block';
@@ -25,34 +24,60 @@ function gameLoop() {
     if (started == true) {
         nextTarget++;
         if (nextTarget == spawnRate) {
-            randomSpawn(50, 50);
+            spawn(50, 50);
             nextTarget = 0;
         }
         if (bonus[0]) moveTarget(bonus[0], 'bonus');
         if (target[0]) moveTarget(target[0], 'target');
+        if (bomb[0]) moveTarget(bomb[0], 'bomb');
         if (target[0]) target[0].onmousedown = () => addPoint('target');
-        if (bonus[0]) bonus[0].onmousedown = () => addBonus('bonus');
+        if (bonus[0]) bonus[0].onmousedown = () => bonusPoint('bonus');
+        if (bomb[0]) bomb[0].onmousedown = () => looseLife('bomb');
         if (score >= hiScore) hiScore = score;
         if (score%100 == 0 && score != 0) lives++, score+= 10;
     }
 }
-
-// add sprite animation within kill zone
-    //fix kill zone placing to responsive
 
 function start() {
     started = true;
     document.getElementById('start').style.display = 'none';
 }
 
-function restart() {
-    document.getElementById('start').style.display = 'block';
-    clearInterval(game);
-    deleteAll('target');
-    deleteAll('bonus')
-    init();
+function spawn(top, bottom) {
+    const newTarget = document.createElement('BUTTON');
+    if (spawnType == 0) newTarget.setAttribute('class', 'target');
+    if (spawnType == 1) {
+        newTarget.setAttribute('class', 'bonus');
+        spawnType = 0;
+    } if (spawnType == 2) {
+        newTarget.setAttribute('class', 'bomb');
+        spawnType = 0;
+    }
+    // Spawn location
+    if (Math.round(Math.random()) == 1) newTarget.style.left = -30 + 'px';
+    else newTarget.style.left = parseInt(areaX) + 'px';
+    newTarget.style.top = (Math.random() * (parseInt(areaY)-top-bottom) + top) + 'px';
+    document.querySelector('.game-area').appendChild(newTarget); 
 }
-function addBonus (className) {
+
+function moveTarget(target, name) {
+    let tarPos = parseInt(target.style.left);
+    if (tarPos < parseInt(areaX)/2 + 10 && tarPos > parseInt(areaX)/2 - 50) {
+        if (name == 'target') looseLife(name);
+        if (name == 'bonus') deleteTarget(name);
+        if (name == 'bomb') { addPoint(name); 
+            if (targetSpeed > 1) targetSpeed--;
+        }
+    }
+    if (tarPos > parseInt(areaX)/2) target.style.left = tarPos - targetSpeed + 'px';
+    else target.style.left = tarPos + targetSpeed + 'px';
+}
+
+function spawnChange(diceRoll) {
+    spawnType = Math.round(diceRoll * 2);
+}
+
+function bonusPoint (className) {
     deleteTarget(className);
     score+=10;
 }
@@ -60,7 +85,8 @@ function addBonus (className) {
 function addPoint(className) {
     deleteTarget(className);
     score++;
-    if (score%20 == 0) spawnType = 1;
+    if (className == 'bomb') score++;
+    if (score%20 == 0) spawnChange(Math.random());
     if(score%20 == 0 && score < 30) targetSpeed+= 1;
     if(score%10 == 0 && score > 30) targetSpeed+= 1;
     if(score%5 == 0 && score > 60) targetSpeed+= 1;
@@ -77,36 +103,6 @@ function looseLife(className) {
 function deleteTarget(className) {
     const element = document.getElementsByClassName(className);
     element[0].parentNode.removeChild(element[0]);
-}
-
-function deleteAll(className){
-    const elements = document.getElementsByClassName(className);
-    while(elements.length > 0) elements[0].parentNode.removeChild(elements[0]);
-}
-
-function randomSpawn(top, bottom) {
-    const newTarget = document.createElement('BUTTON');
-    if (spawnType == 1) {
-        newTarget.setAttribute('class', 'bonus');
-        spawnType = 0;
-    } else newTarget.setAttribute('class', 'target');
-    //toggle sides at random
-    if (Math.round(Math.random()) == 1) newTarget.style.left = -30 + 'px';
-    else newTarget.style.left = parseInt(areaX) + 'px';
-    //spawn within margins (top, bottom)
-    newTarget.style.top = (Math.random() * (parseInt(areaY)-top-bottom) + top) + 'px';
-
-    document.querySelector('.game-area').appendChild(newTarget); 
-}
-
-function moveTarget(target, name) {
-    let tarPos = parseInt(target.style.left);
-    if (tarPos < parseInt(areaX)/2 + 10 && tarPos > parseInt(areaX)/2 - 50) {
-        if (name == 'target') looseLife('target');
-        if (name == 'bonus') deleteTarget('bonus');
-    }
-    if (tarPos > parseInt(areaX)/2) target.style.left = tarPos - targetSpeed + 'px';
-    else target.style.left = tarPos + targetSpeed + 'px';
 }
 
 function pause() {
@@ -128,7 +124,19 @@ function gameOver() {
     document.querySelector('.game-area > svg').style.display = 'none';
 }
 
-    
+function restart() {
+    document.getElementById('start').style.display = 'block';
+    clearInterval(game);
+    deleteAll('target');
+    deleteAll('bonus')
+    init();
+}
+
+function deleteAll(className){
+    const elements = document.getElementsByClassName(className);
+    while(elements.length > 0) elements[0].parentNode.removeChild(elements[0]);
+}
+
 //nthchil
 //nthchildoftype
 //different enemy == different class
@@ -148,3 +156,7 @@ function gameOver() {
     // make the stuff delete
 
 // later: slashing instead
+
+
+// add sprite animation within kill zone
+    //fix kill zone placing to responsive

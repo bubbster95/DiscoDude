@@ -61,6 +61,15 @@
     border-radius: 50%;  
 }
 
+.bomb {
+    position: absolute;
+    height: 30px;
+    width: 30px;
+    background-color: lightcoral;
+    border-color: black;
+    border-radius: 50%;
+}
+
 .target {
     position: absolute;
     height: 30px;
