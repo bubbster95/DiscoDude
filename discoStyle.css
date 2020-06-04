@@ -1,9 +1,25 @@
+.menu {
+    /* border: 5px solid lightcoral; */
+    background-color: lightcoral;
+    padding-bottom: 1vh;
+}
+.body {
+    height: 100vh;
+    width: 98vw;
+    margin: 0, 0, 0, 0;
+}
 .game-area {
     position: relative;
-    height: 400px;
-    width: 400px;
+    height: 90%;
+    width: 100%;
     border: 5px solid lightcoral;
     background-color: lightblue;
+}
+
+#kill-zone {
+    transform-origin: center;
+    height: 81vh;
+    width: 100vw;
 }
 
 .game-area > p {
@@ -15,21 +31,31 @@
     background-color: rgb(252, 239, 181);
 }
 
-.controls {
-    background-color: lightgoldenrodyellow;
-    border-color: lightcoral;
-    border-radius: 10px;
-    color: lightskyblue;
-    font-family: Tahoma;
-    transition-duration: 0.4s;
+#scoreCard, #highScore {
+    font-size: 5vh;
+    font-family: Impact; 
+    color: lightskyblue; 
 }
-.pause-button {
+
+#lives {
+    font-size: 5vh;
+    font-family: Impact; 
+    color: lightgoldenrodyellow;
+}
+
+@media only screen and (max-width: 750px) {
+    #scoreCard, #highScore, #lives {font-size: 4.5vw;}
+} 
+
+.pause-button, .controls {
+    height: 8vh;
+    width: 15vw;
     background-color: lightgoldenrodyellow;
-    border-color: lightcoral;
+    border-color: lightskyblue;
     border-radius: 10px;
     color: lightskyblue;
-    font-family: Tahoma;
-    transition-duration: 0.4s;
+    font-family: impact;
+    font-size: 3vw;
 }
 
 .score {
@@ -38,13 +64,14 @@
 }
 
 .start {
-    top: 160px;
-    left: 145px;
+    transform-origin: center;
+    top: 45vh;
+    left: 42vw;
     position: absolute;
     font-family: Impact;
-    font-size: x-large;
-    height: 40px;
-    width: 100px;
+    font-size: 6vh;
+    height: 10vh;
+    width: 20vw;
     text-align: center;
     color: lightskyblue;
     background-color: rgb(252, 239, 181);

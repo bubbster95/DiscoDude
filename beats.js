@@ -65,7 +65,7 @@ function spawn(top, bottom) {
 
 function moveTarget(target, name) {
     let tarPos = parseInt(target.style.left);
-    if (tarPos < parseInt(areaX)/2 + 10 && tarPos > parseInt(areaX)/2 - 50) {
+    if (tarPos < parseInt(areaX)/2 + 30 && tarPos > parseInt(areaX)/2 - 30) {
         if (name == 'target') looseLife(name);
         if (name == 'bonus') deleteTarget(name);
         if (name == 'bomb') { addPoint(name); 
