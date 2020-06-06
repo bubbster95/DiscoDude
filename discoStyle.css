@@ -1,11 +1,10 @@
 .menu {
-    /* border: 5px solid lightcoral; */
     background-color: lightcoral;
     padding-bottom: 1vh;
 }
 .body {
     height: 100vh;
-    width: 98vw;
+    width: q00vw;
     margin: 0, 0, 0, 0;
 }
 .game-area {
@@ -48,14 +47,14 @@
 } 
 
 .pause-button, .controls {
+    font-size: 3vw;
     height: 8vh;
     width: 15vw;
+    border-radius: 10px;
     background-color: lightgoldenrodyellow;
     border-color: lightskyblue;
-    border-radius: 10px;
     color: lightskyblue;
     font-family: impact;
-    font-size: 3vw;
 }
 
 .score {
@@ -64,44 +63,22 @@
 }
 
 .start {
-    transform-origin: center;
-    top: 45vh;
-    left: 42vw;
-    position: absolute;
-    font-family: Impact;
     font-size: 6vh;
     height: 10vh;
     width: 20vw;
+    top: 45vh;
+    left: 42vw;
+    border-radius: 10px;
+    position: absolute;
+    font-family: Impact;
     text-align: center;
     color: lightskyblue;
     background-color: rgb(252, 239, 181);
     border-color: lightcoral;
-    border-radius: 10px;
 }
 
-.bonus {
+.bonus, .slow, .bomb, .target  {
     position: absolute;
-    height: 30px;
-    width: 30px;
-    background-color: lightgreen;
-    border-color: lightcoral;
-    border-radius: 50%;  
-}
-
-.bomb {
-    position: absolute;
-    height: 30px;
-    width: 30px;
-    background-color: lightcoral;
-    border-color: black;
-    border-radius: 50%;
-}
-
-.target {
-    position: absolute;
-    height: 30px;
-    width: 30px;
-    background-color: rgb(252, 239, 181);
-    border-color: lightcoral;
-    border-radius: 50%;
+    height: 40px;
+    width: 40px;
 }
