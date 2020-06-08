@@ -32,13 +32,13 @@
     left: 35vw;
     position: absolute;
 }
-@media only screen and (max-width: 450px) {
-    .disco-dude {left: 20vw;}
-    
-}
 @media only screen and (max-width: 750px) {
     .disco-dude {height: 50vh; left: 30vw;}
 } 
+@media only screen and (max-width: 450px) {
+    .disco-dude {left: 18vw;}
+    
+}
 @media only screen and (min-width: 1000px) {
     .disco-dude {left: 36vw;}
 }
@@ -47,6 +47,11 @@
     font-size: 5vh;
     font-family: Impact; 
     color: lightskyblue; 
+}
+
+#tip {
+    background-size: 1vh;
+    font-size: 5vh;
 }
 
 #lives {
