@@ -11,14 +11,10 @@
     position: relative;
     height: 90%;
     width: 100%;
+    background-position: center;
+    background-image: url('assets/DiscoFloor2.jpg');
     border: 5px solid lightcoral;
     background-color: lightblue;
-}
-
-#kill-zone {
-    transform-origin: center;
-    height: 81vh;
-    width: 100vw;
 }
 
 .game-area > p {
@@ -28,6 +24,19 @@
     color: lightcoral;
     text-align: center;
     background-color: rgb(252, 239, 181);
+}
+
+.disco-dude {
+    transform-origin: center;
+    top: 25vh;
+    left: 35vw;
+    position: absolute;
+}
+@media only screen and (max-width: 750px) {
+    .disco-dude {height: 50vh;}
+} 
+@media only screen and (min-width: 1000px) {
+    .disco-dude {left: 36vw;}
 }
 
 #scoreCard, #highScore {
@@ -79,6 +88,6 @@
 
 .bonus, .slow, .bomb, .target  {
     position: absolute;
-    height: 40px;
-    width: 40px;
+    height: 60px;
+    width: 60px;
 }

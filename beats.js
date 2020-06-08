@@ -1,6 +1,7 @@
 let game, score, lives, hiScore = 0;
 let areaX, areaY;
 let nextTarget, spawnRate, spawnType = 0, targetSpeed;
+let dance = 3, wait = 0, busy = false;
 
 init = () => {
     started = false;
@@ -15,13 +16,20 @@ init = () => {
     areaX = getComputedStyle(document.querySelector('.game-area')).width  
     // Kill Zone and Game Over toggle
     document.querySelector('.game-area > p').style.display = 'none';
-    document.querySelector('.game-area > svg').style.display = 'block';
+    document.getElementById('disco-dude').style.display = 'block';
 }
     
 gameLoop = () => {
     document.getElementById('scoreCard').innerHTML = "Score: "+ score;
     document.getElementById('lives').innerHTML = "Lives: " + lives;
-    document.getElementById('highScore').innerHTML = "High Score: "+ hiScore;
+    document.getElementById('highScore').innerHTML = "High Score: "+ hiScore;  
+    console.log(busy)
+    wait++;
+    if (wait == 15 && busy == false) {
+        idol();
+        wait = 0;
+    }
+
     if (started == true) {
         if (!target[0]) spawn(50, 50);
         // scores
@@ -33,10 +41,10 @@ gameLoop = () => {
         if (bomb[0]) moveTarget(bomb[0], 'bomb');
         if (slow[0]) moveTarget(slow[0], 'slow');
         // click
-            if (target[0]) target[0].onmousedown = () => addPoint('target');
-            if (bonus[0]) bonus[0].onmousedown = () => bonusPoint('bonus');
-            if (bomb[0]) bomb[0].onmousedown = () => looseLife('bomb');
-            if (slow[0]) slow[0].onmousedown = () => slowMo('slow');
+        if (target[0]) target[0].onmousedown = () => addPoint('target');
+        if (bonus[0]) bonus[0].onmousedown = () => bonusPoint('bonus');
+        if (bomb[0]) bomb[0].onmousedown = () => looseLife('bomb');
+        if (slow[0]) slow[0].onmousedown = () => slowMo('slow');
     }
 }
 
@@ -93,6 +101,7 @@ bonusPoint = (className) => {
 }
 
 addPoint = (className) => {
+    discoAnimation('dance');
     deleteTarget(className);
     score++;
     if (className == 'bomb') score++;
@@ -111,7 +120,7 @@ looseLife = (className) => {
     lives--;
     document.getElementById('lives').innerHTML = "Lives: " + lives;
     if (lives == 0) gameOver();
-    else lifeAnimation();
+    else discoAnimation('life');
 }
 
 slowMo = (className) => {
@@ -119,18 +128,42 @@ slowMo = (className) => {
     deleteTarget(className);
 }
 
-lifeAnimation = () => {
+idol = () => {
     let int = setInterval(frame, 33);
     let frames = 0
     function frame() {
         frames++;
-        if (frames == 10){
+        if (frames == 5) {
             clearInterval(int);
-            document.querySelector('.game-area > svg').style.display = 'block';
-        }
-        else document.querySelector('.game-area > svg').style.display = 'none'; 
+            document.disco.src='assets/DiscoDanceSprite1.png';
+        } else document.disco.src='assets/DiscoDanceSprite2.png';
     }
- 
+}
+
+discoAnimation = (clip) => {
+    let int = setInterval(frame, 33);
+    let frames = 0
+    busy = true;
+    function frame() {
+        frames++
+        if (clip == 'life') {
+            if (frames == 10){
+                clearInterval(int);
+                document.getElementById('disco-dude').style.display = 'block';
+                busy = false, wait = 0;
+            }
+            else document.getElementById('disco-dude').style.display = 'none';
+        } else if (clip == 'dance') {
+            if (frames == 10){
+                if (dance < 8) dance++;
+                else dance = 3
+                clearInterval(int);
+                document.disco.src='assets/DiscoDanceSprite1.png';
+                busy = false, wait = 0;
+            }
+            else document.disco.src='assets/DiscoDanceSprite' + dance + '.png';
+        }  
+    }
 }
 
 deleteTarget = (className) => {
@@ -154,7 +187,7 @@ gameOver = () => {
     deleteAll('target');
     document.getElementById('game-over').innerHTML = 'Game Over!<h6 class="score">Score:'+score+'</h6>';
     document.querySelector('.game-area > p').style.display = 'block';
-    document.querySelector('.game-area > svg').style.display = 'none';
+    document.getElementById('disco-dude').style.display = 'none';
 }
 
 restart = () => {
@@ -174,29 +207,4 @@ deleteAll = (className) => {
 //nthchil
 //nthchildoftype
 
-// function spawnTarget(x, y) {
-//     const target = document.createElement('BUTTON');
-//     target.style.left = x + 'px';
-//     target.style.top = y + 'px';
-//     document.querySelector('.game-area').appendChild(target); 
-// }
-
 // later: slashing instead
-//fix kill zone placing to responsive
-
-// function spawn(top, bottom) {
-//     const newTarget = document.createElement('BUTTON');
-//     if (spawnType == 0) newTarget.setAttribute('class', 'target');
-//     if (spawnType == 1) {
-//         newTarget.setAttribute('class', 'bonus');
-//         spawnType = 0;
-//     } if (spawnType == 2) {
-//         newTarget.setAttribute('class', 'bomb');
-//         spawnType = 0;
-//     }
-//     // Spawn location
-//     if (Math.round(Math.random()) == 1) newTarget.style.left = -30 + 'px';
-//     else newTarget.style.left = parseInt(areaX) + 'px';
-//     newTarget.style.top = (Math.random() * (parseInt(areaY)-top-bottom) + top) + 'px';
-//     document.querySelector('.game-area').appendChild(newTarget); 
-// }
