@@ -7,10 +7,16 @@ init = () => {
     started = false;
     game = setInterval(gameLoop, 33);
     score = 0, lives = 3, nextTarget = 0, spawnRate = 30, targetSpeed = 1,
+    // Targets
     target = document.getElementsByClassName('target');
     bonus = document.getElementsByClassName('bonus');
     bomb = document.getElementsByClassName('bomb');
     slow = document.getElementsByClassName('slow');
+    // Sound
+    looseSound = document.getElementById('loose-sound')
+    slowSound = document.getElementById('slow-sound')
+    bonusSound = document.getElementById('bonus-sound')
+    bubbleSound = document.getElementById('bubble-sound')
     // game area dimensions
     areaY = getComputedStyle(document.querySelector('.game-area')).height
     areaX = getComputedStyle(document.querySelector('.game-area')).width  
@@ -22,16 +28,16 @@ init = () => {
 gameLoop = () => {
     document.getElementById('scoreCard').innerHTML = "Score: "+ score;
     document.getElementById('lives').innerHTML = "Lives: " + lives;
-    document.getElementById('highScore').innerHTML = "High Score: "+ hiScore;  
-    console.log(busy)
+    document.getElementById('highScore').innerHTML = "High Score: "+ hiScore;
+    
     wait++;
-    if (wait == 15 && busy == false) {
+    if (wait >= 15 && busy == false) {
         idol();
         wait = 0;
     }
 
     if (started == true) {
-        if (!target[0]) spawn(50, 50);
+        if (!target[0]) spawn(100, 100);
         // scores
         if (score >= hiScore) hiScore = score;
         if (score%100 == 0 && score != 0) lives++, score+= 10;
@@ -51,6 +57,7 @@ gameLoop = () => {
 start = () => {
     started = true;
     document.getElementById('start').style.display = 'none';
+    document.getElementById('tip').style.display = 'none';
 }
 
 spawn = (top, bottom) => {
@@ -96,11 +103,13 @@ spawnChange = (diceRoll) => {
 }
 
 bonusPoint = (className) => {
+    bonusSound.play();
     deleteTarget(className);
     score+=10;
 }
 
 addPoint = (className) => {
+    bubbleSound.play();
     discoAnimation('dance');
     deleteTarget(className);
     score++;
@@ -115,6 +124,7 @@ addPoint = (className) => {
 }
 
 looseLife = (className) => {
+    looseSound.play();
     deleteTarget(className);
     if (targetSpeed > 1) targetSpeed--; 
     lives--;
@@ -124,6 +134,7 @@ looseLife = (className) => {
 }
 
 slowMo = (className) => {
+    slowSound.play();
     if (targetSpeed > 1) targetSpeed--;
     deleteTarget(className);
 }
@@ -150,7 +161,7 @@ discoAnimation = (clip) => {
             if (frames == 10){
                 clearInterval(int);
                 document.getElementById('disco-dude').style.display = 'block';
-                busy = false, wait = 0;
+                busy = false;
             }
             else document.getElementById('disco-dude').style.display = 'none';
         } else if (clip == 'dance') {
@@ -159,7 +170,7 @@ discoAnimation = (clip) => {
                 else dance = 3
                 clearInterval(int);
                 document.disco.src='assets/DiscoDanceSprite1.png';
-                busy = false, wait = 0;
+                busy = false;
             }
             else document.disco.src='assets/DiscoDanceSprite' + dance + '.png';
         }  

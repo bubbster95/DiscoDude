@@ -32,8 +32,12 @@
     left: 35vw;
     position: absolute;
 }
+@media only screen and (max-width: 450px) {
+    .disco-dude {left: 20vw;}
+    
+}
 @media only screen and (max-width: 750px) {
-    .disco-dude {height: 50vh;}
+    .disco-dude {height: 50vh; left: 30vw;}
 } 
 @media only screen and (min-width: 1000px) {
     .disco-dude {left: 36vw;}
@@ -65,6 +69,9 @@
     color: lightskyblue;
     font-family: impact;
 }
+@media only screen and (max-width: 450px) {
+    .controls .pause-button {height: 0vw;}
+}
 
 .score {
     margin-top: 0px;
@@ -84,6 +91,12 @@
     color: lightskyblue;
     background-color: rgb(252, 239, 181);
     border-color: lightcoral;
+}
+@media only screen and (max-width: 450px) {
+    .start { 
+    width: 20vw;
+    font-size: 3vh;
+    }
 }
 
 .bonus, .slow, .bomb, .target  {
