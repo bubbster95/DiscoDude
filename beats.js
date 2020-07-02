@@ -164,11 +164,11 @@ discoAnimation = (clip) => {
             }
             else document.getElementById('disco-dude').style.display = 'none';
         } else if (clip == 'dance') {
-            if (frames == 15){
+            if (frames == 10){
                 if (dance < 8) dance++;
                 else dance = 3
                 clearInterval(int);
-                // document.disco.src='assets/DiscoDanceSprite1.png';
+                document.disco.src='assets/DiscoDanceSprite1.png'
                 busy = false;
             } else document.disco.src='assets/DiscoDanceSprite' + dance + '.png';
         }  
