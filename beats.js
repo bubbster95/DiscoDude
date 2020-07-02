@@ -29,8 +29,8 @@ gameLoop = () => {
     document.getElementById('scoreCard').innerHTML = "Score: "+ score;
     document.getElementById('lives').innerHTML = "Lives: " + lives;
     document.getElementById('highScore').innerHTML = "High Score: "+ hiScore;
-    
     wait++;
+    window.addEventListener('resize', restart);
     if (wait >= 15 && busy == false) {
         idol();
         wait = 0;
@@ -164,14 +164,13 @@ discoAnimation = (clip) => {
             }
             else document.getElementById('disco-dude').style.display = 'none';
         } else if (clip == 'dance') {
-            if (frames == 10){
+            if (frames == 15){
                 if (dance < 8) dance++;
                 else dance = 3
                 clearInterval(int);
-                document.disco.src='assets/DiscoDanceSprite1.png';
+                // document.disco.src='assets/DiscoDanceSprite1.png';
                 busy = false;
-            }
-            else document.disco.src='assets/DiscoDanceSprite' + dance + '.png';
+            } else document.disco.src='assets/DiscoDanceSprite' + dance + '.png';
         }  
     }
 }
