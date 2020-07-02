@@ -120,7 +120,6 @@ addPoint = (className) => {
     if(score%10 == 0 && score > 60) targetSpeed+= 1;
     //speed cap
     if(targetSpeed > 10) targetSpeed = 10;
-    console.log(targetSpeed)
 }
 
 looseLife = (className) => {
