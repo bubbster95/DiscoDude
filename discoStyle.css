@@ -1,6 +1,5 @@
 .menu {
-    background-color: lightcoral;
-    padding-bottom: 1vh;
+    padding: 10px;
 }
 .body {
     position: absolute;
@@ -10,13 +9,14 @@
     margin: 0, 0, 0, 0;
 }
 .game-area {
-    position: absolute;
+    position: fixed;
+    left: 0;
+    top: 0;
     z-index: -5;
-    height: 90%;
+    height: 100%;
     width: 100%;
     background-position: center;
     background-image: url('assets/DiscoFloor2.jpg');
-    border: 5px solid lightcoral;
     background-color: lightblue;
 }
 
@@ -26,9 +26,9 @@
     height: 110px;
     font-family: Tahoma;
     font-size: 50px;
-    color: lightcoral;
+    color: black;
     text-align: center;
-    background-color: rgb(252, 239, 181);
+    background-color: rgb(252, 239, 181, .5);
 }
 
 .disco-dude {
@@ -42,6 +42,10 @@
 @media only screen and (max-width: 750px) {
     .disco-dude {height: 60%; top:20vh}
 } 
+
+#scoreCard, #highScore, #lives {
+    text-shadow: 2px 2px rgb(0, 0, 0);
+}
 
 #scoreCard, #highScore {
     font-size: 5vh;
@@ -62,7 +66,7 @@
 #lives {
     font-size: 5vh;
     font-family: Impact; 
-    color: lightgoldenrodyellow;
+    color: purple;
 }
 
 @media only screen and (max-width: 750px) {
@@ -74,11 +78,21 @@
     height: 8vh;
     width: 15vw;
     border-radius: 10px;
-    background-color: lightgoldenrodyellow;
+}
+
+.pause-button, .controls, .start {
+    background-color: rgba(0,0,0, 0.2);
     border-color: lightskyblue;
     color: lightskyblue;
     font-family: impact;
 }
+
+.pause-button:hover, .controls:hover, .start:hover {
+    color: black!important;
+    border-color: lightskyblue;
+    background-color: lightskyblue;
+}
+
 @media only screen and (max-width: 450px) {
     .controls .pause-button {height: 0vw;}
 }
@@ -89,20 +103,15 @@
 }
 
 .start {
-    position: relative;
+    position: absolute;
     z-index: 10;
-    top: 10%;
+    bottom: 5%;
+    left: 40vw;
     margin: auto;
     font-size: 6vh;
     height: 10vh;
     width: 20vw;
     border-radius: 10px;
-    font-family: Impact;
-    text-align: center;
-    color: lightskyblue;
-    background-color: rgb(252, 239, 181);
-    border-color: lightcoral;
-    display: flex;
 }
 
 h2 {
