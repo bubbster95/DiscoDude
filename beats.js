@@ -6,7 +6,7 @@ let dance = 3, wait = 0, busy = false;
 init = () => {
     started = false;
     game = setInterval(gameLoop, 33);
-    score = 0, lives = 3, nextTarget = 0, spawnRate = 30, targetSpeed = 1,
+    score = 0, lives = 3, nextTarget = 0, spawnRate = 30, targetSpeed = 2,
     // Targets
     target = document.getElementsByClassName('target');
     bonus = document.getElementsByClassName('bonus');
@@ -29,9 +29,10 @@ gameLoop = () => {
     document.getElementById('scoreCard').innerHTML = "Score: "+ score;
     document.getElementById('lives').innerHTML = "Lives: " + lives;
     document.getElementById('highScore').innerHTML = "High Score: "+ hiScore;
-    wait++;
     window.addEventListener('resize', restart);
-    if (wait >= 15 && busy == false) {
+
+    wait++;
+    if (wait >= 17) {
         idol();
         wait = 0;
     }
@@ -143,33 +144,35 @@ idol = () => {
     let frames = 0
     function frame() {
         frames++;
-        if (frames == 5) {
+        if (frames >= 7 && busy == false) {
             clearInterval(int);
             document.disco.src='assets/DiscoDanceSprite1.png';
-        } else document.disco.src='assets/DiscoDanceSprite2.png';
+        } else if (document.disco.getAttribute('src') == 'assets/DiscoDanceSprite1.png') {
+            document.disco.src='assets/DiscoDanceSprite2.png';
+        }
     }
 }
 
 discoAnimation = (clip) => {
-    let int = setInterval(frame, 33);
-    let frames = 0
     busy = true;
+    let pose = setInterval(frame, 33);
+    let frames = 0
     function frame() {
         frames++
         if (clip == 'life') {
-            if (frames == 10){
-                clearInterval(int);
+            if (frames >= 12){
+                clearInterval(pose);
                 document.getElementById('disco-dude').style.display = 'block';
                 busy = false;
             }
             else document.getElementById('disco-dude').style.display = 'none';
         } else if (clip == 'dance') {
-            if (frames == 10){
+            if (frames >= 12){
                 if (dance < 8) dance++;
                 else dance = 3
-                clearInterval(int);
+                clearInterval(pose);
                 document.disco.src='assets/DiscoDanceSprite1.png'
-                busy = false;
+                busy = false
             } else document.disco.src='assets/DiscoDanceSprite' + dance + '.png';
         }  
     }
